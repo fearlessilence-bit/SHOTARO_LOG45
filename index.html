@@ -5,7 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#FDF5F8">
-  <title>SHOTARO LOG45</title>
+  <meta name="description" content="SHOTARO LOG — A personal fan archive documenting Shotaro's public schedules, moments and memories.">
+  <title>SHOTARO LOG</title>
+
   <style>
     :root {
       --pink: #FDF5F8;
@@ -55,7 +57,14 @@
     main {
       max-width: 1100px;
       margin: auto;
-      padding: 80px 7% 100px;
+      padding: 65px 7% 100px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 0.85fr;
+      align-items: center;
+      gap: 35px;
     }
 
     .eyebrow {
@@ -67,7 +76,7 @@
     h1 {
       margin: 28px 0 20px;
       font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(48px, 12vw, 100px);
+      font-size: clamp(46px, 8vw, 86px);
       font-weight: normal;
       line-height: 0.98;
       letter-spacing: -3px;
@@ -95,8 +104,26 @@
       letter-spacing: 1.5px;
     }
 
+    .hero-photo {
+      width: 100%;
+      display: block;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      object-position: center;
+      border: 1px solid var(--border);
+      background: var(--white);
+    }
+
+    .photo-caption {
+      margin-top: 9px;
+      text-align: right;
+      color: var(--muted);
+      font-size: 9px;
+      letter-spacing: 1px;
+    }
+
     .section-heading {
-      margin: 90px 0 24px;
+      margin: 75px 0 24px;
       padding-top: 24px;
       border-top: 1px solid var(--border);
       display: flex;
@@ -126,7 +153,7 @@
     }
 
     .module-card {
-      min-height: 185px;
+      min-height: 175px;
       padding: 22px;
       background: var(--white);
       border: 1px solid var(--border);
@@ -228,9 +255,19 @@
       letter-spacing: 1px;
     }
 
-    @media (max-width: 520px) {
+    @media (max-width: 600px) {
       main {
-        padding-top: 60px;
+        padding-top: 45px;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+
+      .hero-photo {
+        aspect-ratio: 4 / 5;
+        max-height: 520px;
       }
 
       .module-grid {
@@ -239,7 +276,7 @@
       }
 
       .module-card {
-        min-height: 170px;
+        min-height: 165px;
         padding: 15px;
       }
 
@@ -254,20 +291,34 @@
     }
   </style>
 </head>
+
 <body>
   <header class="topbar">
-    <div>SHOTARO LOG45</div>
-    <span>FAN ARCHIVE · 2026</span>
+    <div>SHOTARO LOG</div>
+    <span>PERSONAL FAN ARCHIVE · 2026</span>
   </header>
 
   <main>
     <section class="hero">
-      <p class="eyebrow">A LITTLE SPACE FOR SHOTARO</p>
-      <h1>SHOTARO <span>LOG45.</span></h1>
-      <p class="intro">
-        우리의 Memories
-      </p>
-      <span class="hero-label">SCHEDULE · WEVERSE · BUBBLE</span>
+      <div class="hero-text">
+        <p class="eyebrow">A LITTLE SPACE FOR SHOTARO</p>
+        <h1>SHOTARO <span>LOG.</span></h1>
+        <p class="intro">
+          A personal archive of Shotaro's public schedules,
+          messages, moments and memories. Collected with love, organized by date.
+        </p>
+        <span class="hero-label">SCHEDULE · WEVERSE · BUBBLE</span>
+      </div>
+
+      <div class="hero-image">
+        <img
+          class="hero-photo"
+          src="IMG_8682.jpeg"
+          alt="Shotaro"
+          loading="eager"
+        >
+        <p class="photo-caption">A MOMENT WITH SHOTARO ♡</p>
+      </div>
     </section>
 
     <section>
@@ -336,8 +387,8 @@
   </main>
 
   <footer>
-    <span>SHOTARO LOG45</span>
-    <span>JUST LOVE ♡</span>
+    <span>SHOTARO LOG</span>
+    <span>MADE WITH LOVE ♡</span>
   </footer>
 </body>
 </html>
