@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FDF5F8">
+  <meta name="description" content="Browse the Shotaro Archive collections.">
+  <title>ARCHIVE — SHOTARO ARCHIVE</title>
+
+  <style>
+    :root {
+      --pink: #FDF5F8;
+      --white: #FFFFFF;
+      --black: #171719;
+      --blue: #DCEEFF;
+      --border: #E8DDE2;
+      --muted: #77717A;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--pink);
+      color: var(--black);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .topbar {
+      padding: 22px 7%;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      font-size: 10px;
+      letter-spacing: 2px;
+    }
+
+    .topbar span { color: var(--muted); }
+
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 65px 7% 90px;
+    }
+
+    .eyebrow {
+      margin: 0;
+      font-size: 10px;
+      letter-spacing: 3px;
+    }
+
+    h1 {
+      margin: 20px 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(48px, 10vw, 80px);
+      font-weight: normal;
+      line-height: 1;
+    }
+
+    h1 span {
+      color: #8ABBE8;
+      font-style: italic;
+    }
+
+    .intro {
+      max-width: 490px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 2;
+    }
+
+    .section-heading {
+      margin: 55px 0 18px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    h2 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 26px;
+      font-weight: normal;
+    }
+
+    .section-number {
+      font-size: 10px;
+      letter-spacing: 1.5px;
+    }
+
+    .archive-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .archive-card {
+      padding: 22px;
+      background: var(--white);
+      border: 1px solid var(--border);
+    }
+
+    .archive-card .number {
+      font-size: 10px;
+      letter-spacing: 2px;
+    }
+
+    .archive-card h3 {
+      margin: 24px 0 9px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 24px;
+      font-weight: normal;
+    }
+
+    .archive-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.9;
+    }
+
+    .arrow {
+      display: block;
+      margin-top: 20px;
+      text-align: right;
+      font-size: 18px;
+    }
+
+    .note {
+      margin-top: 30px;
+      padding: 20px;
+      background: var(--blue);
+      font-size: 12px;
+      line-height: 1.9;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 30px;
+      padding-bottom: 7px;
+      border-bottom: 1px solid #D9B7C0;
+      font-size: 10px;
+      letter-spacing: 1px;
+    }
+
+    footer {
+      padding: 24px 7%;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 9px;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 480px) {
+      main { padding-top: 52px; }
+      .archive-list { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <a href="index.html">← HOME</a>
+    <span>SHOTARO ARCHIVE</span>
+  </header>
+
+  <main>
+    <p class="eyebrow">04 — ARCHIVE</p>
+    <h1>All memories<span>.</span></h1>
+    <p class="intro">
+      A central index for exploring Shotaro's public schedules,
+      Weverse records and personal Bubble archive by collection.
+    </p>
+
+    <div class="section-heading">
+      <h2>Collections</h2>
+      <span class="section-number">01 — 04</span>
+    </div>
+
+    <div class="archive-list">
+      <a class="archive-card" href="schedule.html">
+        <span class="number">01 / SCHEDULE</span>
+        <h3>Schedules</h3>
+        <p>Public events, appearances and daily photo records.</p>
+        <span class="arrow">↗</span>
+      </a>
+
+      <a class="archive-card" href="weverse.html">
+        <span class="number">02 / WEVERSE</span>
+        <h3>Weverse</h3>
+        <p>Posts &amp; Moments, Replies and Livestreams.</p>
+        <span class="arrow">↗</span>
+      </a>
+
+      <a class="archive-card" href="bubble.html">
+        <span class="number">03 / BUBBLE</span>
+        <h3>Bubble</h3>
+        <p>Daily message records and media indexes.</p>
+        <span class="arrow">↗</span>
+      </a>
+
+      <div class="archive-card">
+        <span class="number">04 / FUTURE</span>
+        <h3>More to come</h3>
+        <p>More collections and date-based records can be added over time.</p>
+        <span class="arrow">♡</span>
+      </div>
+    </div>
+
+    <div class="note">
+      This archive is a fan-made collection and is not affiliated
+      with Shotaro, RIIZE or their official platforms.
+    </div>
+
+    <a class="back-link" href="index.html">← BACK TO HOME</a>
+  </main>
+
+  <footer>SHOTARO ARCHIVE · ALL COLLECTIONS ♡</footer>
+</body>
+</html>
