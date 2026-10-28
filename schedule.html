@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -94,8 +93,11 @@ h1{font-size:clamp(36px,7vw,65px);line-height:1.08;letter-spacing:-2px;margin:10
 .type{font-size:9px;font-weight:800;letter-spacing:1.4px;color:#5D8DB8}
 .record-title{font-size:16px;font-weight:750;margin:7px 0}
 .record-info{font-size:12px;color:var(--muted);margin:4px 0;white-space:pre-wrap}
-.record-image{display:block;width:100%;max-height:360px;object-fit:contain;margin-top:12px;border-radius:9px;background:var(--bg)}
-.source{display:inline-block;color:#5D8DB8;font-size:11px;margin-top:10px}
+.record-image{
+  display:block;width:100%;max-height:360px;object-fit:contain;
+  margin-top:12px;border-radius:9px;background:var(--bg)
+}
+.source{display:inline-block;color:#5D8DB8;font-size:11px;margin:10px 12px 0 0}
 .empty{background:var(--bg);border-radius:12px;padding:20px;font-size:12px;color:var(--muted)}
 .empty strong{display:block;color:var(--ink);margin-bottom:5px}
 .day-nav{display:flex;justify-content:space-between;gap:8px;margin-top:18px}
@@ -128,6 +130,7 @@ footer{text-align:center;border-top:1px solid var(--border);padding:25px 10px;co
     <div class="eyebrow">A PERSONAL FAN ARCHIVE</div>
     <h1>SHOTARO'S<br>TIMELINE.</h1>
     <p class="intro">A little record of every moment. · 2026</p>
+    <p class="intro" id="loadStatus" role="status">Loading archive records...</p>
 
     <div class="panel" style="margin:26px 0 30px">
       <div class="heading">
@@ -171,7 +174,12 @@ footer{text-align:center;border-top:1px solid var(--border);padding:25px 10px;co
 
 <footer>SHOTARO LOG · A FAN-MADE ARCHIVE · 2026</footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+/* Use the same Project URL and Publishable key as admin.html. */
+const SUPABASE_URL = "https://ssisstwholtqohdxrxee.supabase.co";
+const SUPABASE_KEY = "sb_publishable_g9H032_gF99LcSsZ2Vo04w_nhVGmwEh";
+
 const months = [
   "January","February","March","April","May","June",
   "July","August","September","October","November","December"
@@ -181,38 +189,7 @@ const shortMonths = [
   "JUL","AUG","SEP","OCT","NOV","DEC"
 ];
 
-/*
-HOW TO ADD A RECORD:
-Date format: YYYY-MM-DD
-One date can contain multiple records.
-
-"2026-10-26": [{
-  type: "OFFICIAL SCHEDULE",
-  title: "Event name",
-  location: "Location",
-  description: "Notes",
-  image: "https://image-link",
-  source: "https://official-source-link"
-}],
-
-Use only publicly shareable images and sources.
-Leave image or source as "" if not available.
-*/
-const records = {
-  /*
-  Example format only — replace with verified information:
-
-  "2026-10-26": [{
-    type: "OFFICIAL SCHEDULE",
-    title: "Example event title",
-    location: "Location",
-    description: "Add verified details here.",
-    image: "",
-    source: "https://example.com"
-  }],
-  */
-};
-
+const records = {};
 let currentMonth = 0;
 let selectedDate = "2026-01-01";
 const $ = id => document.getElementById(id);
@@ -322,6 +299,16 @@ function addText(parent,className,value) {
   parent.appendChild(el);
 }
 
+function safeHttpUrl(value) {
+  try {
+    const url = new URL(value);
+    if (url.protocol === "https:" || url.protocol === "http:") {
+      return url.href;
+    }
+  } catch (error) {}
+  return null;
+}
+
 function renderDay() {
   const parts = selectedDate.split("-");
   const month = Number(parts[1]) - 1;
@@ -366,34 +353,31 @@ function renderDay() {
       addText(card,"record-info",item.location);
       addText(card,"record-info",item.description);
 
-      if (item.image) {
-        try {
-          const url = new URL(item.image);
-          if (url.protocol === "https:" || url.protocol === "http:") {
-            const img = document.createElement("img");
-            img.className = "record-image";
-            img.src = url.href;
-            img.alt = item.title || "Schedule photo";
-            img.loading = "lazy";
-            card.appendChild(img);
-          }
-        } catch (error) {}
-      }
+      (item.images || []).forEach(imageUrl => {
+        const validUrl = safeHttpUrl(imageUrl);
+        if (!validUrl) return;
 
-      if (item.source) {
-        try {
-          const url = new URL(item.source);
-          if (url.protocol === "https:" || url.protocol === "http:") {
-            const a = document.createElement("a");
-            a.className = "source";
-            a.href = url.href;
-            a.target = "_blank";
-            a.rel = "noopener noreferrer";
-            a.textContent = "VIEW SOURCE ↗";
-            card.appendChild(a);
-          }
-        } catch (error) {}
-      }
+        const img = document.createElement("img");
+        img.className = "record-image";
+        img.src = validUrl;
+        img.alt = item.title || "Schedule photo";
+        img.loading = "lazy";
+        card.appendChild(img);
+      });
+
+      (item.sources || []).forEach(sourceUrl => {
+        const validUrl = safeHttpUrl(sourceUrl);
+        if (!validUrl) return;
+
+        const a = document.createElement("a");
+        a.className = "source";
+        a.href = validUrl;
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        a.textContent = "VIEW SOURCE ↗";
+        card.appendChild(a);
+      });
+
       panel.appendChild(card);
     });
   }
@@ -424,6 +408,62 @@ function moveDay(amount) {
   renderDay();
 }
 
+async function loadRecords() {
+  const status = $("loadStatus");
+
+  if (
+    SUPABASE_URL === "PASTE_YOUR_PROJECT_URL_HERE" ||
+    SUPABASE_KEY === "PASTE_YOUR_PUBLISHABLE_KEY_HERE"
+  ) {
+    status.textContent = "Archive connection needs to be configured.";
+    return;
+  }
+
+  if (!window.supabase) {
+    status.textContent = "Could not load the archive service. Please refresh.";
+    return;
+  }
+
+  try {
+    const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+    const { data, error } = await db
+      .from("schedule_records")
+      .select("id,event_date,sort_order,title,category,description,location,image_urls,source_urls,created_at")
+      .gte("event_date","2026-01-01")
+      .lte("event_date","2026-12-31")
+      .order("event_date",{ascending:true})
+      .order("sort_order",{ascending:true})
+      .order("created_at",{ascending:true});
+
+    if (error) throw error;
+
+    Object.keys(records).forEach(key => delete records[key]);
+
+    (data || []).forEach(row => {
+      const key = row.event_date;
+      if (!records[key]) records[key] = [];
+
+      records[key].push({
+        type: row.category || "SCHEDULE",
+        title: row.title || "Untitled record",
+        location: row.location || "",
+        description: row.description || "",
+        images: Array.isArray(row.image_urls) ? row.image_urls : [],
+        sources: Array.isArray(row.source_urls) ? row.source_urls : []
+      });
+    });
+
+    status.textContent = "Archive records are up to date.";
+    renderCalendar();
+    renderDay();
+  } catch (error) {
+    console.error("Unable to load schedule records:",error);
+    status.textContent =
+      "Could not load records. Please check the Supabase connection and public read policy.";
+  }
+}
+
 $("back").addEventListener("click",showOverview);
 $("prev").addEventListener("click",() => {
   if (currentMonth > 0) openMonth(currentMonth - 1);
@@ -433,6 +473,9 @@ $("next").addEventListener("click",() => {
 });
 
 buildOverview();
+renderCalendar();
+renderDay();
+loadRecords();
 </script>
 </body>
 </html>
