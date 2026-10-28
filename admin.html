@@ -16,12 +16,10 @@ body {
   margin:0; background:var(--bg); color:var(--ink);
   font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
 }
-header {
-  padding:28px 20px 20px; border-bottom:1px solid var(--border);
-}
+header { padding:28px 20px 20px; border-bottom:1px solid var(--border); }
 .brand { font-size:12px; letter-spacing:3px; color:var(--muted); }
 h1 { font-size:25px; margin:10px 0 4px; }
-main { max-width:650px; margin:auto; padding:22px 16px 60px; }
+main { max-width:760px; margin:auto; padding:22px 16px 60px; }
 .card {
   background:var(--card); border:1px solid var(--border);
   border-radius:18px; padding:20px; margin-bottom:18px;
@@ -34,17 +32,41 @@ input,textarea,select {
 }
 textarea { min-height:100px; resize:vertical; }
 button {
-  border:0; border-radius:12px; padding:13px 17px;
+  border:0; border-radius:12px; padding:12px 15px;
   background:var(--blue); color:#171719; font-size:14px;
-  font-weight:600; cursor:pointer; margin-top:14px;
+  font-weight:600; cursor:pointer; margin:8px 6px 0 0;
 }
 button.secondary { background:#F2E8ED; }
-button:disabled { opacity:.5; }
+button.danger { background:#F7DDE3; }
+button:disabled { opacity:.5; cursor:wait; }
 .note { font-size:12px; line-height:1.6; color:var(--muted); }
 .status { font-size:13px; line-height:1.6; margin-top:12px; overflow-wrap:anywhere; }
 .hidden { display:none !important; }
 .row { display:flex; gap:10px; }
 .row > * { flex:1; min-width:0; }
+.record {
+  border:1px solid var(--border); border-radius:14px;
+  padding:14px; margin-top:12px; background:#fff;
+}
+.record-title { font-weight:700; line-height:1.5; overflow-wrap:anywhere; }
+.record-meta { color:var(--muted); font-size:12px; line-height:1.7; margin-top:5px; }
+.record-actions { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+.record-actions button { margin:0; }
+.photo-item {
+  display:flex; gap:10px; align-items:center;
+  padding:10px 0; border-bottom:1px solid var(--border);
+}
+.photo-item img {
+  width:76px; height:76px; object-fit:cover;
+  border-radius:8px; flex-shrink:0;
+}
+.photo-item label {
+  display:flex; align-items:center; gap:8px;
+  margin:0; line-height:1.5; overflow-wrap:anywhere;
+}
+.photo-item input { width:auto; }
+.toolbar { display:flex; gap:8px; flex-wrap:wrap; }
+.toolbar input { flex:1; min-width:180px; }
 </style>
 </head>
 <body>
@@ -65,217 +87,502 @@ button:disabled { opacity:.5; }
     <div class="status" id="loginStatus" role="status"></div>
   </section>
 
-  <section class="card hidden" id="editorCard">
-    <h2>New Archive Entry</h2>
-    <div class="note" id="signedIn"></div>
-    <button class="secondary" id="logoutBtn">Log out</button>
-
-    <label for="eventDate">Date</label>
-    <input id="eventDate" type="date" required>
-
-    <label for="title">Title *</label>
-    <input id="title" maxlength="200" placeholder="e.g. Mini Live — First Session" required>
-
-    <div class="row">
-      <div>
-        <label for="category">Category</label>
-        <select id="category">
-          <option value="OFFICIAL SCHEDULE">OFFICIAL SCHEDULE</option>
-          <option value="EVENT">EVENT</option>
-          <option value="PHOTO">PHOTO</option>
-          <option value="VIDEO">VIDEO</option>
-          <option value="INTERVIEW">INTERVIEW</option>
-          <option value="FAN ARCHIVE">FAN ARCHIVE</option>
-          <option value="OTHER">OTHER</option>
-        </select>
+  <div id="workspace" class="hidden">
+    <section class="card">
+      <div class="row" style="align-items:center">
+        <div>
+          <h2 style="margin-bottom:5px">管理后台</h2>
+          <div class="note" id="signedIn"></div>
+        </div>
+        <div style="text-align:right">
+          <button class="secondary" id="logoutBtn">Log out</button>
+        </div>
       </div>
-      <div>
-        <label for="location">Location</label>
-        <input id="location" placeholder="e.g. Seoul">
+    </section>
+
+    <section class="card" id="editorCard">
+      <h2 id="formHeading">New Archive Entry</h2>
+      <div class="note" id="editHint">填写信息后保存，即可新增一条记录。</div>
+
+      <label for="eventDate">Date *</label>
+      <input id="eventDate" type="date" required>
+
+      <label for="title">Title *</label>
+      <input id="title" maxlength="200" placeholder="e.g. Mini Live — First Session" required>
+
+      <div class="row">
+        <div>
+          <label for="category">Category</label>
+          <select id="category">
+            <option value="OFFICIAL SCHEDULE">OFFICIAL SCHEDULE</option>
+            <option value="EVENT">EVENT</option>
+            <option value="PHOTO">PHOTO</option>
+            <option value="VIDEO">VIDEO</option>
+            <option value="INTERVIEW">INTERVIEW</option>
+            <option value="FAN ARCHIVE">FAN ARCHIVE</option>
+            <option value="OTHER">OTHER</option>
+          </select>
+        </div>
+        <div>
+          <label for="location">Location</label>
+          <input id="location" placeholder="e.g. Seoul">
+        </div>
       </div>
-    </div>
 
-    <label for="description">Notes / Description</label>
-    <textarea id="description" placeholder="Write the details you want to keep..."></textarea>
+      <label for="description">Notes / Description</label>
+      <textarea id="description" placeholder="Write the details you want to keep..."></textarea>
 
-    <label for="sourceUrls">Source links</label>
-    <textarea id="sourceUrls" placeholder="Paste links here, one link per line"></textarea>
+      <label for="sourceUrls">Source links</label>
+      <textarea id="sourceUrls" placeholder="Paste links here, one link per line"></textarea>
 
-    <label for="photos">Photos</label>
-    <input id="photos" type="file" accept="image/*" multiple>
-    <div class="note">Choose public-use or properly authorized images. Photo upload will work after storage is configured.</div>
+      <div id="existingPhotosSection" class="hidden">
+        <label>已有照片</label>
+        <div class="note">勾选要从这条记录中移除的照片。这里只会修改记录，不会删除 Storage 中的原始文件。</div>
+        <div id="existingPhotos"></div>
+      </div>
 
-    <label for="sortOrder">Display order</label>
-    <input id="sortOrder" type="number" value="0" step="1">
+      <label for="photos">添加照片</label>
+      <input id="photos" type="file" accept="image/*" multiple>
+      <div class="note">可一次选择多张图片。请使用有权公开展示的图片。</div>
 
-    <button id="saveBtn">Save Record</button>
-    <div class="status" id="saveStatus" role="status"></div>
-  </section>
+      <label for="sortOrder">Display order</label>
+      <input id="sortOrder" type="number" value="0" step="1">
+
+      <div class="toolbar">
+        <button id="saveBtn">Save Record</button>
+        <button class="secondary hidden" id="cancelEditBtn">Cancel Edit</button>
+      </div>
+      <div class="status" id="saveStatus" role="status"></div>
+    </section>
+
+    <section class="card" id="recordsCard">
+      <h2>全部记录</h2>
+      <div class="note">按日期从新到旧排列。编辑或删除操作只影响所选记录。</div>
+      <div class="toolbar" style="margin-top:14px">
+        <input id="searchInput" type="search" placeholder="搜索标题、日期、分类或地点">
+        <button class="secondary" id="refreshBtn">Refresh</button>
+      </div>
+      <div class="status" id="listStatus" role="status"></div>
+      <div id="recordsList"></div>
+    </section>
+  </div>
 </main>
 
 <script>
 (() => {
-  const SUPABASE_URL = "https://ssisstwholtqohdxrxee.supabase.co/";
+  // 请保留你原来 admin.html 中的真实 URL 和 Publishable Key
+  const SUPABASE_URL = "https://ssisstwholtqohdxrxee.supabase.co";
   const SUPABASE_KEY = "sb_publishable_g9H032_gF99LcSsZ2Vo04w_nhVGmwEh";
   const STORAGE_BUCKET = "shotaro-photos";
 
-  const loginCard = document.getElementById("loginCard");
-  const editorCard = document.getElementById("editorCard");
-  const loginStatus = document.getElementById("loginStatus");
-  const saveStatus = document.getElementById("saveStatus");
-  const loginBtn = document.getElementById("loginBtn");
-  const saveBtn = document.getElementById("saveBtn");
+  const $ = id => document.getElementById(id);
+  const loginCard = $("loginCard");
+  const workspace = $("workspace");
+  const loginStatus = $("loginStatus");
+  const saveStatus = $("saveStatus");
+  const listStatus = $("listStatus");
+  const loginBtn = $("loginBtn");
+  const saveBtn = $("saveBtn");
 
   if (
     SUPABASE_URL.includes("PASTE_") ||
     SUPABASE_KEY.includes("PASTE_")
   ) {
     loginStatus.textContent =
-      "Setup needed: add your Supabase Project URL and publishable key in this file.";
+      "Setup needed: add your existing Supabase Project URL and publishable key.";
     loginBtn.disabled = true;
     return;
   }
 
   const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  function showStatus(element, message) {
-    element.textContent = message;
+  let records = [];
+  let editingId = null;
+  let busy = false;
+
+  function status(element, message) {
+    element.textContent = message || "";
+  }
+
+  function localDate() {
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = String(now.getMonth() + 1).padStart(2, "0");
+    const d = String(now.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
   }
 
   function showEditor(user) {
     loginCard.classList.add("hidden");
-    editorCard.classList.remove("hidden");
-    document.getElementById("signedIn").textContent =
-      "Signed in as " + user.email;
+    workspace.classList.remove("hidden");
+    $("signedIn").textContent = "Signed in as " + (user.email || "admin");
   }
 
   function showLogin() {
-    editorCard.classList.add("hidden");
+    workspace.classList.add("hidden");
     loginCard.classList.remove("hidden");
+  }
+
+  function safeText(value) {
+    return value == null ? "" : String(value);
+  }
+
+  function addText(parent, tag, text, className) {
+    const element = document.createElement(tag);
+    element.textContent = text;
+    if (className) element.className = className;
+    parent.appendChild(element);
+    return element;
   }
 
   async function refreshSession() {
     const { data, error } = await db.auth.getSession();
     if (error) {
-      showStatus(loginStatus, error.message);
+      status(loginStatus, error.message);
       return;
     }
-    if (data.session) showEditor(data.session.user);
-    else showLogin();
+    if (data.session) {
+      showEditor(data.session.user);
+      await loadRecords();
+    } else {
+      showLogin();
+    }
   }
 
   loginBtn.addEventListener("click", async () => {
-    showStatus(loginStatus, "");
+    status(loginStatus, "");
     loginBtn.disabled = true;
     try {
       const { data, error } = await db.auth.signInWithPassword({
-        email: document.getElementById("email").value.trim(),
-        password: document.getElementById("password").value
+        email: $("email").value.trim(),
+        password: $("password").value
       });
       if (error) throw error;
       showEditor(data.user);
+      await loadRecords();
     } catch (error) {
-      showStatus(loginStatus, error.message || "Login failed.");
+      status(loginStatus, error.message || "Login failed.");
     } finally {
       loginBtn.disabled = false;
     }
   });
 
-  document.getElementById("logoutBtn").addEventListener("click", async () => {
+  $("logoutBtn").addEventListener("click", async () => {
     await db.auth.signOut();
     showLogin();
   });
 
   db.auth.onAuthStateChange((_event, session) => {
-    if (session) showEditor(session.user);
-    else showLogin();
+    if (session) {
+      showEditor(session.user);
+      // Avoid doing network work inside the auth callback itself.
+      setTimeout(() => loadRecords(), 0);
+    } else {
+      showLogin();
+    }
   });
 
-  document.getElementById("eventDate").value =
-    new Date().toLocaleDateString("en-CA");
-
-  saveBtn.addEventListener("click", async () => {
-    showStatus(saveStatus, "");
-    saveBtn.disabled = true;
+  async function loadRecords() {
+    status(listStatus, "正在加载全部记录……");
+    $("recordsList").replaceChildren();
 
     try {
-      const { data: sessionData, error: sessionError } =
-        await db.auth.getSession();
+      const all = [];
+      const pageSize = 500;
+      let start = 0;
+
+      // Supabase returns records in batches so the list isn't limited to
+      // only the first page of results.
+      while (true) {
+        const { data, error } = await db
+          .from("schedule_records")
+          .select("*")
+          .order("event_date", { ascending: false })
+          .order("sort_order", { ascending: true })
+          .order("created_at", { ascending: false })
+          .range(start, start + pageSize - 1);
+
+        if (error) throw error;
+        all.push(...(data || []));
+        if (!data || data.length < pageSize) break;
+        start += pageSize;
+      }
+
+      records = all;
+      renderRecords();
+      status(listStatus, `共加载 ${records.length} 条记录。`);
+    } catch (error) {
+      status(listStatus, "加载失败：" + (error.message || "请检查网络和数据库权限。"));
+    }
+  }
+
+  function renderRecords() {
+    const container = $("recordsList");
+    container.replaceChildren();
+
+    const query = $("searchInput").value.trim().toLowerCase();
+    const filtered = records.filter(record => {
+      const haystack = [
+        record.event_date, record.title, record.category,
+        record.location, record.description
+      ].map(safeText).join(" ").toLowerCase();
+      return haystack.includes(query);
+    });
+
+    if (!filtered.length) {
+      addText(container, "p",
+        records.length ? "没有找到符合条件的记录。" : "暂时没有记录。",
+        "note");
+      return;
+    }
+
+    for (const record of filtered) {
+      const card = document.createElement("div");
+      card.className = "record";
+
+      addText(card, "div", safeText(record.title) || "(无标题)", "record-title");
+      addText(
+        card, "div",
+        `${safeText(record.event_date)} · ${safeText(record.category || "SCHEDULE")}`,
+        "record-meta"
+      );
+
+      if (record.location) {
+        addText(card, "div", "地点：" + record.location, "record-meta");
+      }
+
+      const imageCount = Array.isArray(record.image_urls) ? record.image_urls.length : 0;
+      const sourceCount = Array.isArray(record.source_urls) ? record.source_urls.length : 0;
+      addText(card, "div", `照片 ${imageCount} 张 · 来源链接 ${sourceCount} 条`, "record-meta");
+
+      const actions = document.createElement("div");
+      actions.className = "record-actions";
+
+      const editButton = document.createElement("button");
+      editButton.textContent = "编辑";
+      editButton.addEventListener("click", () => startEdit(record));
+      actions.appendChild(editButton);
+
+      const deleteButton = document.createElement("button");
+      deleteButton.textContent = "删除";
+      deleteButton.className = "danger";
+      deleteButton.addEventListener("click", () => deleteRecord(record));
+      actions.appendChild(deleteButton);
+
+      card.appendChild(actions);
+      container.appendChild(card);
+    }
+  }
+
+  $("searchInput").addEventListener("input", renderRecords);
+  $("refreshBtn").addEventListener("click", loadRecords);
+
+  function startEdit(record) {
+    editingId = record.id;
+    $("formHeading").textContent = "Edit Archive Entry";
+    $("editHint").textContent = "正在编辑已有记录。保存后会更新公开页面显示的内容。";
+    $("eventDate").value = record.event_date || localDate();
+    $("title").value = record.title || "";
+    $("category").value = record.category || "OFFICIAL SCHEDULE";
+    $("location").value = record.location || "";
+    $("description").value = record.description || "";
+    $("sourceUrls").value = (record.source_urls || []).join("\n");
+    $("sortOrder").value = Number(record.sort_order) || 0;
+    $("photos").value = "";
+    $("existingPhotos").replaceChildren();
+
+    const images = Array.isArray(record.image_urls) ? record.image_urls : [];
+    $("existingPhotosSection").classList.toggle("hidden", images.length === 0);
+
+    images.forEach((url, index) => {
+      const item = document.createElement("div");
+      item.className = "photo-item";
+
+      const img = document.createElement("img");
+      img.src = url;
+      img.alt = `已有照片 ${index + 1}`;
+      img.loading = "lazy";
+      item.appendChild(img);
+
+      const label = document.createElement("label");
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.dataset.imageUrl = url;
+      checkbox.className = "remove-photo";
+      label.appendChild(checkbox);
+      label.appendChild(document.createTextNode("移除这张照片"));
+      item.appendChild(label);
+
+      $("existingPhotos").appendChild(item);
+    });
+
+    $("saveBtn").textContent = "Save Changes";
+    $("cancelEditBtn").classList.remove("hidden");
+    status(saveStatus, "");
+    $("editorCard").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function resetForm() {
+    editingId = null;
+    $("formHeading").textContent = "New Archive Entry";
+    $("editHint").textContent = "填写信息后保存，即可新增一条记录。";
+    $("eventDate").value = localDate();
+    $("title").value = "";
+    $("category").value = "OFFICIAL SCHEDULE";
+    $("location").value = "";
+    $("description").value = "";
+    $("sourceUrls").value = "";
+    $("photos").value = "";
+    $("sortOrder").value = "0";
+    $("existingPhotos").replaceChildren();
+    $("existingPhotosSection").classList.add("hidden");
+    $("saveBtn").textContent = "Save Record";
+    $("cancelEditBtn").classList.add("hidden");
+    status(saveStatus, "");
+  }
+
+  $("cancelEditBtn").addEventListener("click", resetForm);
+
+  async function uploadPhotos(eventDate, files) {
+    const urls = [];
+
+    for (const file of files) {
+      if (!file.type.startsWith("image/")) {
+        throw new Error("请选择图片文件。");
+      }
+
+      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+      const path = eventDate + "/" + crypto.randomUUID() + "-" + safeName;
+
+      const { error } = await db.storage
+        .from(STORAGE_BUCKET)
+        .upload(path, file, { upsert: false });
+
+      if (error) throw error;
+
+      const { data } = db.storage
+        .from(STORAGE_BUCKET)
+        .getPublicUrl(path);
+
+      urls.push(data.publicUrl);
+    }
+
+    return urls;
+  }
+
+  function parseSources() {
+    const urls = $("sourceUrls").value
+      .split(/\n/)
+      .map(s => s.trim())
+      .filter(Boolean);
+
+    for (const url of urls) {
+      if (!/^https?:\/\//i.test(url)) {
+        throw new Error("每条来源链接都必须以 http:// 或 https:// 开头。");
+      }
+    }
+    return urls;
+  }
+
+  saveBtn.addEventListener("click", async () => {
+    if (busy) return;
+    busy = true;
+    saveBtn.disabled = true;
+    status(saveStatus, "正在保存……");
+
+    try {
+      const { data: sessionData, error: sessionError } = await db.auth.getSession();
       if (sessionError) throw sessionError;
-      if (!sessionData.session) throw new Error("Please log in first.");
+      if (!sessionData.session) throw new Error("请先登录。");
 
-      const eventDate = document.getElementById("eventDate").value;
-      const title = document.getElementById("title").value.trim();
-      if (!eventDate || !title) {
-        throw new Error("Please enter a date and title.");
-      }
+      const eventDate = $("eventDate").value;
+      const title = $("title").value.trim();
+      if (!eventDate || !title) throw new Error("请填写日期和标题。");
 
-      const sourceUrls = document.getElementById("sourceUrls").value
-        .split(/\n/)
-        .map(s => s.trim())
-        .filter(Boolean);
+      const sourceUrls = parseSources();
+      const newFiles = Array.from($("photos").files || []);
+      const newImageUrls = await uploadPhotos(eventDate, newFiles);
 
-      for (const url of sourceUrls) {
-        if (!/^https?:\/\//i.test(url)) {
-          throw new Error("Each source link must begin with http:// or https://");
-        }
-      }
+      let imageUrls = newImageUrls;
 
-      const imageUrls = [];
-      const files = Array.from(document.getElementById("photos").files || []);
+      if (editingId !== null) {
+        const oldRecord = records.find(r => String(r.id) === String(editingId));
+        if (!oldRecord) throw new Error("找不到正在编辑的记录，请刷新后重试。");
 
-      for (const file of files) {
-        if (!file.type.startsWith("image/")) {
-          throw new Error("Please choose image files only.");
-        }
+        const removed = new Set(
+          Array.from(document.querySelectorAll(".remove-photo:checked"))
+            .map(input => input.dataset.imageUrl)
+        );
 
-        const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-        const path = eventDate + "/" + crypto.randomUUID() + "-" + safeName;
-
-        const { error: uploadError } = await db.storage
-          .from(STORAGE_BUCKET)
-          .upload(path, file, { upsert: false });
-
-        if (uploadError) throw uploadError;
-
-        const { data: publicData } = db.storage
-          .from(STORAGE_BUCKET)
-          .getPublicUrl(path);
-
-        imageUrls.push(publicData.publicUrl);
+        const oldImages = (oldRecord.image_urls || []).filter(url => !removed.has(url));
+        imageUrls = [...oldImages, ...newImageUrls];
       }
 
       const record = {
         event_date: eventDate,
-        sort_order: Number(document.getElementById("sortOrder").value) || 0,
+        sort_order: Number($("sortOrder").value) || 0,
         title,
-        category: document.getElementById("category").value,
-        description: document.getElementById("description").value.trim(),
-        location: document.getElementById("location").value.trim(),
+        category: $("category").value,
+        description: $("description").value.trim(),
+        location: $("location").value.trim(),
         image_urls: imageUrls,
         source_urls: sourceUrls
       };
 
-      const { error } = await db
-        .from("schedule_records")
-        .insert(record);
+      let result;
+      if (editingId !== null) {
+        result = await db
+          .from("schedule_records")
+          .update(record)
+          .eq("id", editingId);
+      } else {
+        result = await db
+          .from("schedule_records")
+          .insert(record);
+      }
 
-      if (error) throw error;
+      if (result.error) throw result.error;
 
-      showStatus(saveStatus, "Record saved successfully!");
-      document.getElementById("title").value = "";
-      document.getElementById("description").value = "";
-      document.getElementById("location").value = "";
-      document.getElementById("sourceUrls").value = "";
-      document.getElementById("photos").value = "";
-      document.getElementById("sortOrder").value = "0";
+      status(saveStatus, editingId !== null ? "修改已保存！" : "记录新增成功！");
+      resetForm();
+      await loadRecords();
     } catch (error) {
-      showStatus(saveStatus, error.message || "Could not save record.");
+      status(saveStatus, "保存失败：" + (error.message || "请稍后重试。"));
     } finally {
+      busy = false;
       saveBtn.disabled = false;
     }
   });
 
+  async function deleteRecord(record) {
+    const confirmed = confirm(
+      `确定删除这条记录吗？\n\n日期：${record.event_date}\n标题：${record.title}\n\n此操作无法直接撤销。`
+    );
+    if (!confirmed) return;
+
+    status(listStatus, "正在删除……");
+
+    try {
+      const { data: sessionData, error: sessionError } = await db.auth.getSession();
+      if (sessionError) throw sessionError;
+      if (!sessionData.session) throw new Error("登录状态已失效，请重新登录。");
+
+      const { error } = await db
+        .from("schedule_records")
+        .delete()
+        .eq("id", record.id);
+
+      if (error) throw error;
+
+      if (String(editingId) === String(record.id)) resetForm();
+      status(listStatus, "记录已删除。");
+      await loadRecords();
+    } catch (error) {
+      status(listStatus, "删除失败：" + (error.message || "请稍后重试。"));
+    }
+  }
+
+  $("eventDate").value = localDate();
   refreshSession();
 })();
 </script>
