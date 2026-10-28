@@ -1,0 +1,281 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FDF5F8">
+  <meta name="description" content="A personal archive of Shotaro's Bubble messages and moments.">
+  <title>BUBBLE — SHOTARO ARCHIVE</title>
+
+  <style>
+    :root {
+      --pink: #FDF5F8;
+      --white: #FFFFFF;
+      --black: #171719;
+      --blue: #DCEEFF;
+      --border: #E8DDE2;
+      --muted: #77717A;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      background: var(--pink);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--pink);
+      color: var(--black);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .topbar {
+      padding: 22px 7%;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      font-size: 10px;
+      letter-spacing: 2px;
+    }
+
+    .topbar span {
+      color: var(--muted);
+    }
+
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 65px 7% 90px;
+    }
+
+    .eyebrow {
+      margin: 0;
+      font-size: 10px;
+      letter-spacing: 3px;
+    }
+
+    h1 {
+      margin: 20px 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(48px, 10vw, 80px);
+      font-weight: normal;
+      line-height: 1;
+      letter-spacing: -2px;
+    }
+
+    h1 span {
+      color: #8ABBE8;
+      font-style: italic;
+    }
+
+    .intro {
+      max-width: 490px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 2;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 9px 12px;
+      background: var(--blue);
+      font-size: 9px;
+      letter-spacing: 1.5px;
+    }
+
+    .section-heading {
+      margin: 55px 0 18px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 26px;
+      font-weight: normal;
+    }
+
+    .section-number {
+      color: var(--black);
+      font-size: 10px;
+      letter-spacing: 1.5px;
+    }
+
+    .record-card {
+      padding: 23px;
+      margin-bottom: 14px;
+      background: var(--white);
+      border: 1px solid var(--border);
+    }
+
+    .record-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 7px 9px;
+      background: var(--blue);
+      color: var(--black);
+      font-size: 9px;
+      letter-spacing: 1px;
+    }
+
+    .record-date {
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 1px;
+    }
+
+    .record-card h3 {
+      margin: 19px 0 8px;
+      font-size: 16px;
+      font-weight: normal;
+    }
+
+    .record-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.9;
+    }
+
+    .record-note {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.8;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 30px;
+      padding-bottom: 7px;
+      border-bottom: 1px solid #D9B7C0;
+      font-size: 10px;
+      letter-spacing: 1px;
+    }
+
+    footer {
+      padding: 24px 7%;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 9px;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 480px) {
+      main {
+        padding-top: 52px;
+      }
+
+      .record-card {
+        padding: 18px;
+      }
+
+      .section-heading h2 {
+        font-size: 23px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <a href="index.html">← HOME</a>
+    <span>SHOTARO ARCHIVE</span>
+  </header>
+
+  <main>
+    <section>
+      <p class="eyebrow">03 — BUBBLE</p>
+      <h1>Bubble<span>.</span></h1>
+      <p class="intro">
+        A personal, date-organized archive of Shotaro's Bubble
+        messages and moments, collected for easy reference.
+      </p>
+      <span class="hero-tag">MESSAGES · DAILY RECORDS · MEMORIES</span>
+    </section>
+
+    <section id="daily-records">
+      <div class="section-heading">
+        <h2>Daily Records</h2>
+        <span class="section-number">01 — DAILY</span>
+      </div>
+
+      <article class="record-card">
+        <div class="record-top">
+          <span class="tag">DAILY MESSAGES</span>
+          <span class="record-date">BY DATE</span>
+        </div>
+        <h3>Daily Bubble Archive</h3>
+        <p>
+          Bubble messages organized by date, making it easier
+          to revisit past conversations and daily updates.
+        </p>
+        <div class="record-note">
+          Each daily record can include a date, message summary,
+          screenshots and personal notes.
+        </div>
+      </article>
+    </section>
+
+    <section id="media">
+      <div class="section-heading">
+        <h2>Photos &amp; Media</h2>
+        <span class="section-number">02 — MEDIA</span>
+      </div>
+
+      <article class="record-card">
+        <div class="record-top">
+          <span class="tag">MEDIA COLLECTION</span>
+          <span class="record-date">BY DATE</span>
+        </div>
+        <h3>Photos &amp; Voice Records</h3>
+        <p>
+          An index for organizing related photos, voice-message
+          notes and other media records by date.
+        </p>
+        <div class="record-note">
+          Keep private subscription content in a secure personal
+          archive. Only share material you have permission to publish.
+        </div>
+      </article>
+    </section>
+
+    <a class="back-link" href="index.html">← BACK TO HOME</a>
+  </main>
+
+  <footer>
+    <span>SHOTARO ARCHIVE</span>
+    <span>BUBBLE COLLECTION ♡</span>
+  </footer>
+</body>
+</html>
