@@ -1,0 +1,283 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SHOTARO LOG — Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --bg:#FDF5F8; --ink:#171719; --card:#FFFFFF;
+  --blue:#8ABBE8; --border:#E8DDE2; --muted:#77717A;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
+}
+header {
+  padding:28px 20px 20px; border-bottom:1px solid var(--border);
+}
+.brand { font-size:12px; letter-spacing:3px; color:var(--muted); }
+h1 { font-size:25px; margin:10px 0 4px; }
+main { max-width:650px; margin:auto; padding:22px 16px 60px; }
+.card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:18px; padding:20px; margin-bottom:18px;
+}
+h2 { font-size:17px; margin:0 0 18px; }
+label { display:block; font-size:13px; margin:15px 0 7px; }
+input,textarea,select {
+  width:100%; border:1px solid var(--border); border-radius:10px;
+  padding:12px; background:#fff; color:var(--ink); font:inherit;
+}
+textarea { min-height:100px; resize:vertical; }
+button {
+  border:0; border-radius:12px; padding:13px 17px;
+  background:var(--blue); color:#171719; font-size:14px;
+  font-weight:600; cursor:pointer; margin-top:14px;
+}
+button.secondary { background:#F2E8ED; }
+button:disabled { opacity:.5; }
+.note { font-size:12px; line-height:1.6; color:var(--muted); }
+.status { font-size:13px; line-height:1.6; margin-top:12px; overflow-wrap:anywhere; }
+.hidden { display:none !important; }
+.row { display:flex; gap:10px; }
+.row > * { flex:1; min-width:0; }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">SHOTARO LOG</div>
+  <h1>Archive Manager</h1>
+  <div class="note">A personal space to organize Shotaro's public schedules and memories.</div>
+</header>
+
+<main>
+  <section class="card" id="loginCard">
+    <h2>Admin Login</h2>
+    <label for="email">Email</label>
+    <input id="email" type="email" autocomplete="username" placeholder="Your admin email">
+    <label for="password">Password</label>
+    <input id="password" type="password" autocomplete="current-password" placeholder="Your password">
+    <button id="loginBtn">Log in</button>
+    <div class="status" id="loginStatus" role="status"></div>
+  </section>
+
+  <section class="card hidden" id="editorCard">
+    <h2>New Archive Entry</h2>
+    <div class="note" id="signedIn"></div>
+    <button class="secondary" id="logoutBtn">Log out</button>
+
+    <label for="eventDate">Date</label>
+    <input id="eventDate" type="date" required>
+
+    <label for="title">Title *</label>
+    <input id="title" maxlength="200" placeholder="e.g. Mini Live — First Session" required>
+
+    <div class="row">
+      <div>
+        <label for="category">Category</label>
+        <select id="category">
+          <option value="OFFICIAL SCHEDULE">OFFICIAL SCHEDULE</option>
+          <option value="EVENT">EVENT</option>
+          <option value="PHOTO">PHOTO</option>
+          <option value="VIDEO">VIDEO</option>
+          <option value="INTERVIEW">INTERVIEW</option>
+          <option value="FAN ARCHIVE">FAN ARCHIVE</option>
+          <option value="OTHER">OTHER</option>
+        </select>
+      </div>
+      <div>
+        <label for="location">Location</label>
+        <input id="location" placeholder="e.g. Seoul">
+      </div>
+    </div>
+
+    <label for="description">Notes / Description</label>
+    <textarea id="description" placeholder="Write the details you want to keep..."></textarea>
+
+    <label for="sourceUrls">Source links</label>
+    <textarea id="sourceUrls" placeholder="Paste links here, one link per line"></textarea>
+
+    <label for="photos">Photos</label>
+    <input id="photos" type="file" accept="image/*" multiple>
+    <div class="note">Choose public-use or properly authorized images. Photo upload will work after storage is configured.</div>
+
+    <label for="sortOrder">Display order</label>
+    <input id="sortOrder" type="number" value="0" step="1">
+
+    <button id="saveBtn">Save Record</button>
+    <div class="status" id="saveStatus" role="status"></div>
+  </section>
+</main>
+
+<script>
+(() => {
+  const SUPABASE_URL = "https://ssisstwholtqohdxrxee.supabase.co/rest/v1/";
+  const SUPABASE_KEY = "sb_publishable_g9H032_gF99LcSsZ2Vo04w_nhVGmwEh";
+  const STORAGE_BUCKET = "shotaro-photos";
+
+  const loginCard = document.getElementById("loginCard");
+  const editorCard = document.getElementById("editorCard");
+  const loginStatus = document.getElementById("loginStatus");
+  const saveStatus = document.getElementById("saveStatus");
+  const loginBtn = document.getElementById("loginBtn");
+  const saveBtn = document.getElementById("saveBtn");
+
+  if (
+    SUPABASE_URL.includes("PASTE_") ||
+    SUPABASE_KEY.includes("PASTE_")
+  ) {
+    loginStatus.textContent =
+      "Setup needed: add your Supabase Project URL and publishable key in this file.";
+    loginBtn.disabled = true;
+    return;
+  }
+
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  function showStatus(element, message) {
+    element.textContent = message;
+  }
+
+  function showEditor(user) {
+    loginCard.classList.add("hidden");
+    editorCard.classList.remove("hidden");
+    document.getElementById("signedIn").textContent =
+      "Signed in as " + user.email;
+  }
+
+  function showLogin() {
+    editorCard.classList.add("hidden");
+    loginCard.classList.remove("hidden");
+  }
+
+  async function refreshSession() {
+    const { data, error } = await db.auth.getSession();
+    if (error) {
+      showStatus(loginStatus, error.message);
+      return;
+    }
+    if (data.session) showEditor(data.session.user);
+    else showLogin();
+  }
+
+  loginBtn.addEventListener("click", async () => {
+    showStatus(loginStatus, "");
+    loginBtn.disabled = true;
+    try {
+      const { data, error } = await db.auth.signInWithPassword({
+        email: document.getElementById("email").value.trim(),
+        password: document.getElementById("password").value
+      });
+      if (error) throw error;
+      showEditor(data.user);
+    } catch (error) {
+      showStatus(loginStatus, error.message || "Login failed.");
+    } finally {
+      loginBtn.disabled = false;
+    }
+  });
+
+  document.getElementById("logoutBtn").addEventListener("click", async () => {
+    await db.auth.signOut();
+    showLogin();
+  });
+
+  db.auth.onAuthStateChange((_event, session) => {
+    if (session) showEditor(session.user);
+    else showLogin();
+  });
+
+  document.getElementById("eventDate").value =
+    new Date().toLocaleDateString("en-CA");
+
+  saveBtn.addEventListener("click", async () => {
+    showStatus(saveStatus, "");
+    saveBtn.disabled = true;
+
+    try {
+      const { data: sessionData, error: sessionError } =
+        await db.auth.getSession();
+      if (sessionError) throw sessionError;
+      if (!sessionData.session) throw new Error("Please log in first.");
+
+      const eventDate = document.getElementById("eventDate").value;
+      const title = document.getElementById("title").value.trim();
+      if (!eventDate || !title) {
+        throw new Error("Please enter a date and title.");
+      }
+
+      const sourceUrls = document.getElementById("sourceUrls").value
+        .split(/\n/)
+        .map(s => s.trim())
+        .filter(Boolean);
+
+      for (const url of sourceUrls) {
+        if (!/^https?:\/\//i.test(url)) {
+          throw new Error("Each source link must begin with http:// or https://");
+        }
+      }
+
+      const imageUrls = [];
+      const files = Array.from(document.getElementById("photos").files || []);
+
+      for (const file of files) {
+        if (!file.type.startsWith("image/")) {
+          throw new Error("Please choose image files only.");
+        }
+
+        const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+        const path = eventDate + "/" + crypto.randomUUID() + "-" + safeName;
+
+        const { error: uploadError } = await db.storage
+          .from(STORAGE_BUCKET)
+          .upload(path, file, { upsert: false });
+
+        if (uploadError) throw uploadError;
+
+        const { data: publicData } = db.storage
+          .from(STORAGE_BUCKET)
+          .getPublicUrl(path);
+
+        imageUrls.push(publicData.publicUrl);
+      }
+
+      const record = {
+        event_date: eventDate,
+        sort_order: Number(document.getElementById("sortOrder").value) || 0,
+        title,
+        category: document.getElementById("category").value,
+        description: document.getElementById("description").value.trim(),
+        location: document.getElementById("location").value.trim(),
+        image_urls: imageUrls,
+        source_urls: sourceUrls
+      };
+
+      const { error } = await db
+        .from("schedule_records")
+        .insert(record);
+
+      if (error) throw error;
+
+      showStatus(saveStatus, "Record saved successfully!");
+      document.getElementById("title").value = "";
+      document.getElementById("description").value = "";
+      document.getElementById("location").value = "";
+      document.getElementById("sourceUrls").value = "";
+      document.getElementById("photos").value = "";
+      document.getElementById("sortOrder").value = "0";
+    } catch (error) {
+      showStatus(saveStatus, error.message || "Could not save record.");
+    } finally {
+      saveBtn.disabled = false;
+    }
+  });
+
+  refreshSession();
+})();
+</script>
+</body>
+</html>
