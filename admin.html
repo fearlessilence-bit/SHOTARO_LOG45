@@ -161,6 +161,7 @@ button:disabled { opacity:.5; cursor:wait; }
       <div class="toolbar" style="margin-top:14px">
         <input id="searchInput" type="search" placeholder="搜索标题、日期、分类或地点">
         <button class="secondary" id="refreshBtn">Refresh</button>
+        <button class="secondary" id="backupBtn">导出全部记录备份</button>
       </div>
       <div class="status" id="listStatus" role="status"></div>
       <div id="recordsList"></div>
@@ -376,6 +377,76 @@ button:disabled { opacity:.5; cursor:wait; }
 
   $("searchInput").addEventListener("input", renderRecords);
   $("refreshBtn").addEventListener("click", loadRecords);
+
+$("backupBtn").addEventListener("click", async () => {
+  const button = $("backupBtn");
+  button.disabled = true;
+  status(listStatus, "正在导出全部记录，请稍候……");
+
+  try {
+    const { data: sessionData, error: sessionError } =
+      await db.auth.getSession();
+
+    if (sessionError) throw sessionError;
+    if (!sessionData.session) {
+      throw new Error("请先登录后台。");
+    }
+
+    const allRecords = [];
+    const pageSize = 500;
+    let start = 0;
+
+    while (true) {
+      const { data, error } = await db
+        .from("schedule_records")
+        .select("*")
+        .order("event_date", { ascending: true })
+        .order("sort_order", { ascending: true })
+        .order("created_at", { ascending: true })
+        .range(start, start + pageSize - 1);
+
+      if (error) throw error;
+
+      allRecords.push(...(data || []));
+
+      if (!data || data.length < pageSize) break;
+      start += pageSize;
+    }
+
+    const backup = {
+      backup_type: "SHOTARO LOG schedule_records",
+      backup_version: 1,
+      exported_at: new Date().toISOString(),
+      record_count: allRecords.length,
+      records: allRecords
+    };
+
+    const blob = new Blob(
+      [JSON.stringify(backup, null, 2)],
+      { type: "application/json;charset=utf-8" }
+    );
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    const date = new Date().toISOString().slice(0, 10);
+
+    link.href = url;
+    link.download = `SHOTARO_LOG_backup_${date}.json`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+
+    status(
+      listStatus,
+      `备份成功！已导出 ${allRecords.length} 条记录。请确认文件已下载并妥善保存。`
+    );
+  } catch (error) {
+    status(listStatus, "备份失败：" + (error.message || "请稍后重试。"));
+  } finally {
+    button.disabled = false;
+  }
+});
 
   function startEdit(record) {
     editingId = record.id;
