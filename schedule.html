@@ -1,267 +1,126 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#FDF5F8">
 <title>2026 Schedule | SHOTARO LOG</title>
 <style>
 :root {
-  --bg: #FDF5F8;
-  --ink: #171719;
-  --card: #FFFFFF;
-  --blue: #8ABBE8;
-  --pale-blue: #DCEEFF;
-  --border: #E8DDE2;
-  --muted: #77717A;
+  --bg:#FDF5F8; --ink:#171719; --card:#FFFFFF;
+  --blue:#8ABBE8; --pale:#DCEEFF;
+  --border:#E8DDE2; --muted:#77717A;
 }
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 85px; }
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue",
-    Arial, sans-serif;
-  line-height: 1.6;
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+  line-height:1.6
 }
-a { color: inherit; text-decoration: none; }
-button { font: inherit; }
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 6%;
-  background: rgba(253,245,248,.95);
-  border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(12px);
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+.topbar{
+  position:sticky;top:0;z-index:5;display:flex;
+  justify-content:space-between;align-items:center;
+  padding:15px 6%;background:rgba(253,245,248,.96);
+  border-bottom:1px solid var(--border)
 }
-.brand {
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 2px;
+.brand{font-size:13px;font-weight:800;letter-spacing:2px}
+.back{font-size:12px;color:var(--muted)}
+main{max-width:1100px;margin:auto;padding:35px 5% 65px}
+.eyebrow{font-size:10px;letter-spacing:2.5px;color:var(--muted);font-weight:700}
+h1{font-size:clamp(36px,7vw,65px);line-height:1.08;letter-spacing:-2px;margin:10px 0}
+.intro{font-size:13px;color:var(--muted)}
+.panel{background:white;border:1px solid var(--border);border-radius:17px;padding:20px}
+.heading{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:15px}
+.heading h2{font-size:19px;margin:0}
+.heading span{font-size:10px;color:var(--muted)}
+.track{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:3px}
+.month-link{
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  padding:8px 0;border-radius:9px;font-size:9px;color:var(--muted)
 }
-.back-link { font-size: 12px; color: var(--muted); }
-main { max-width: 1120px; margin: auto; padding: 36px 5% 70px; }
-.eyebrow {
-  color: var(--muted);
-  font-size: 10px;
-  letter-spacing: 2.5px;
-  font-weight: 700;
+.month-link:before{content:"";width:8px;height:8px;background:var(--border);border-radius:50%}
+.month-link:hover,.month-link.active{background:var(--pale);color:var(--ink)}
+.month-link:hover:before,.month-link.active:before{background:var(--blue)}
+.month-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.month-card{
+  display:block;width:100%;text-align:left;cursor:pointer;
+  background:white;border:1px solid var(--border);border-radius:14px;
+  padding:17px;min-height:115px;color:var(--ink)
 }
-h1 {
-  font-size: clamp(34px, 7vw, 66px);
-  letter-spacing: -2px;
-  line-height: 1.08;
-  margin: 10px 0;
+.month-card:hover{border-color:var(--blue)}
+.month-no{color:#5D8DB8;font-size:10px;font-weight:800;letter-spacing:1px}
+.month-name{display:block;font-size:19px;font-weight:750;margin-top:5px}
+.month-hint{display:block;font-size:10px;color:var(--muted);margin-top:4px}
+#detail{display:none;margin-top:32px}
+.detail-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:18px}
+.detail-head h2{font-size:26px;margin:0}
+.small-btn{
+  border:1px solid var(--border);border-radius:25px;
+  background:white;padding:8px 13px;font-size:11px;cursor:pointer
 }
-.intro { color: var(--muted); font-size: 13px; }
-.year-panel {
-  margin-top: 28px;
-  padding: 22px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 18px;
+.layout{display:grid;grid-template-columns:265px minmax(0,1fr);gap:18px;align-items:start}
+.calendar{position:sticky;top:76px}
+.cal-head{display:flex;justify-content:space-between;align-items:center;gap:5px;margin-bottom:15px}
+.cal-head strong{font-size:13px}
+.cal-head button{border:0;background:var(--bg);border-radius:8px;padding:4px 10px;cursor:pointer}
+.weekdays,.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.weekdays div{text-align:center;font-size:9px;color:var(--muted);padding-bottom:5px}
+.day{
+  position:relative;display:flex;align-items:center;justify-content:center;
+  aspect-ratio:1;border:0;border-radius:8px;background:transparent;
+  color:var(--ink);font-size:11px;cursor:pointer;min-width:0;padding:0
 }
-.section-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
-  margin-bottom: 16px;
+.day:hover{background:var(--pale)}
+.day.selected{background:var(--blue);font-weight:800}
+.day.has-record:not(.selected):after{
+  content:"";position:absolute;bottom:3px;left:50%;
+  transform:translateX(-50%);width:4px;height:4px;
+  background:var(--blue);border-radius:50%
 }
-.section-heading h2 { margin: 0; font-size: 19px; }
-.section-heading span { color: var(--muted); font-size: 11px; }
-.year-track {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 5px;
+.day.selected:after{background:white}
+.hint{font-size:10px;color:var(--muted);margin:12px 0 0}
+.day-panel{min-height:320px}
+.day-date{font-size:11px;color:var(--muted);letter-spacing:1px}
+.day-panel h3{font-size:24px;margin:4px 0 16px}
+.record{
+  border:1px solid var(--border);border-radius:13px;
+  padding:15px;margin-bottom:12px
 }
-.month-link {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 7px;
-  padding: 9px 1px;
-  border-radius: 9px;
-  color: var(--muted);
-  font-size: 9px;
-  transition: .2s;
-}
-.month-link::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--border);
-}
-.month-link:hover, .month-link.active {
-  color: var(--ink);
-  background: var(--pale-blue);
-}
-.month-link.active::before, .month-link:hover::before {
-  background: var(--blue);
-}
-.month-link span { font-size: 9px; }
-.month-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 13px;
-  margin-top: 18px;
-}
-.month-card {
-  text-align: left;
-  cursor: pointer;
-  padding: 18px;
-  min-height: 130px;
-  border: 1px solid var(--border);
-  border-radius: 15px;
-  background: var(--card);
-  color: var(--ink);
-  transition: transform .2s, border-color .2s;
-}
-.month-card:hover { transform: translateY(-2px); border-color: var(--blue); }
-.month-number { color: var(--blue); font-size: 11px; font-weight: 800; letter-spacing: 1px; }
-.month-name { display: block; font-size: 20px; font-weight: 750; margin-top: 7px; }
-.month-note { display: block; color: var(--muted); font-size: 11px; margin-top: 5px; }
-#detailView { display: none; margin-top: 34px; }
-.detail-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 18px;
-}
-.detail-top h2 { font-size: 27px; margin: 0; }
-.text-button {
-  border: 1px solid var(--border);
-  border-radius: 30px;
-  padding: 8px 14px;
-  background: white;
-  color: var(--ink);
-  font-size: 11px;
-  cursor: pointer;
-}
-.detail-layout {
-  display: grid;
-  grid-template-columns: 270px minmax(0, 1fr);
-  gap: 20px;
-  align-items: start;
-}
-.calendar-panel, .day-panel {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 18px;
-}
-.calendar-panel { position: sticky; top: 78px; }
-.calendar-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 6px;
-  margin-bottom: 16px;
-}
-.calendar-head strong { font-size: 14px; }
-.calendar-head button {
-  border: 0;
-  background: var(--bg);
-  border-radius: 8px;
-  padding: 5px 9px;
-  cursor: pointer;
-}
-.weekdays, .calendar-days {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 4px;
-}
-.weekdays div {
-  text-align: center;
-  color: var(--muted);
-  font-size: 10px;
-  padding-bottom: 5px;
-}
-.day-button {
-  border: 0;
-  background: transparent;
-  color: var(--ink);
-  border-radius: 8px;
-  aspect-ratio: 1;
-  min-width: 0;
-  padding: 0;
-  font-size: 11px;
-  cursor: pointer;
-}
-.day-button:hover { background: var(--pale-blue); }
-.day-button.selected { background: var(--blue); font-weight: 800; }
-.day-button.today-record { box-shadow: inset 0 0 0 1px var(--blue); }
-.calendar-hint { color: var(--muted); font-size: 10px; margin: 14px 0 0; }
-.day-panel { min-height: 350px; }
-.day-date { color: var(--muted); font-size: 11px; letter-spacing: 1px; }
-.day-panel h3 { font-size: 25px; margin: 4px 0 16px; }
-.record-card {
-  border: 1px solid var(--border);
-  border-radius: 13px;
-  padding: 16px;
-  margin-bottom: 12px;
-}
-.record-type {
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  color: #5D8DB8;
-}
-.record-title { font-size: 16px; font-weight: 750; margin: 8px 0 5px; }
-.record-copy { font-size: 12px; color: var(--muted); margin: 0; }
-.empty-day {
-  background: var(--bg);
-  border-radius: 12px;
-  padding: 22px 16px;
-  color: var(--muted);
-  font-size: 12px;
-}
-.empty-day strong { display: block; color: var(--ink); margin-bottom: 5px; }
-.detail-nav {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  margin-top: 18px;
-}
-.detail-nav button:disabled { opacity: .35; cursor: default; }
-footer {
-  border-top: 1px solid var(--border);
-  text-align: center;
-  padding: 25px 12px;
-  color: var(--muted);
-  font-size: 10px;
-  letter-spacing: 1.5px;
-}
-@media (max-width: 700px) {
-  main { padding: 28px 5% 50px; }
-  .year-panel { padding: 14px 10px; }
-  .year-track { gap: 1px; }
-  .month-link { font-size: 8px; padding: 8px 0; }
-  .month-link span { font-size: 8px; }
-  .month-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
-  .month-card { padding: 14px; min-height: 112px; }
-  .month-name { font-size: 18px; }
-  .detail-layout { grid-template-columns: minmax(0, 1fr); }
-  .calendar-panel { position: static; }
-  .calendar-panel, .day-panel { padding: 15px; }
-  .day-button { font-size: 12px; }
-  .detail-top h2 { font-size: 23px; }
+.type{font-size:9px;font-weight:800;letter-spacing:1.4px;color:#5D8DB8}
+.record-title{font-size:16px;font-weight:750;margin:7px 0}
+.record-info{font-size:12px;color:var(--muted);margin:4px 0;white-space:pre-wrap}
+.record-image{display:block;width:100%;max-height:360px;object-fit:contain;margin-top:12px;border-radius:9px;background:var(--bg)}
+.source{display:inline-block;color:#5D8DB8;font-size:11px;margin-top:10px}
+.empty{background:var(--bg);border-radius:12px;padding:20px;font-size:12px;color:var(--muted)}
+.empty strong{display:block;color:var(--ink);margin-bottom:5px}
+.day-nav{display:flex;justify-content:space-between;gap:8px;margin-top:18px}
+button:disabled{opacity:.35;cursor:default}
+footer{text-align:center;border-top:1px solid var(--border);padding:25px 10px;color:var(--muted);font-size:10px;letter-spacing:1.5px}
+@media(max-width:700px){
+  main{padding:27px 5% 45px}
+  .panel{padding:14px 10px}
+  .track{gap:1px}
+  .month-link{font-size:8px}
+  .month-link span{font-size:8px}
+  .month-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .month-card{padding:13px;min-height:105px}
+  .month-name{font-size:17px}
+  .layout{grid-template-columns:minmax(0,1fr)}
+  .calendar{position:static}
+  .panel.day-panel{padding:15px}
+  .day{font-size:12px}
 }
 </style>
 </head>
 <body>
 <header class="topbar">
   <a class="brand" href="index.html">SHOTARO LOG</a>
-  <a class="back-link" href="archive.html">← ARCHIVE</a>
+  <a class="back" href="archive.html">← ARCHIVE</a>
 </header>
 
 <main>
@@ -270,46 +129,42 @@ footer {
     <h1>SHOTARO'S<br>TIMELINE.</h1>
     <p class="intro">A little record of every moment. · 2026</p>
 
-    <div class="year-panel">
-      <div class="section-heading">
-        <h2>2026 TIMELINE</h2>
-        <span>SELECT A MONTH</span>
+    <div class="panel" style="margin:26px 0 30px">
+      <div class="heading">
+        <h2>2026 TIMELINE</h2><span>SELECT A MONTH</span>
       </div>
-      <nav class="year-track" id="yearTrack" aria-label="2026 timeline"></nav>
+      <nav class="track" id="track"></nav>
     </div>
 
-    <div class="section-heading" style="margin-top:32px">
-      <h2>MONTHLY ARCHIVE</h2>
-      <span>JAN — DEC 2026</span>
+    <div class="heading">
+      <h2>MONTHLY ARCHIVE</h2><span>JAN — DEC 2026</span>
     </div>
     <div class="month-grid" id="monthGrid"></div>
   </section>
 
-  <section id="detailView">
-    <div class="detail-top">
+  <section id="detail">
+    <div class="detail-head">
       <div>
         <div class="eyebrow">DAILY ARCHIVE</div>
         <h2 id="detailTitle">2026.01</h2>
       </div>
-      <button class="text-button" id="backButton">← All months</button>
+      <button class="small-btn" id="back">← All months</button>
     </div>
-
-    <div class="detail-layout">
-      <aside class="calendar-panel">
-        <div class="calendar-head">
-          <button id="prevMonth" aria-label="Previous month">‹</button>
-          <strong id="calendarTitle">JANUARY 2026</strong>
-          <button id="nextMonth" aria-label="Next month">›</button>
+    <div class="layout">
+      <aside class="panel calendar">
+        <div class="cal-head">
+          <button id="prev" aria-label="Previous month">‹</button>
+          <strong id="calTitle"></strong>
+          <button id="next" aria-label="Next month">›</button>
         </div>
         <div class="weekdays">
           <div>MON</div><div>TUE</div><div>WED</div><div>THU</div>
           <div>FRI</div><div>SAT</div><div>SUN</div>
         </div>
-        <div class="calendar-days" id="calendarDays"></div>
-        <p class="calendar-hint">Tap a date to view that day's archive.</p>
+        <div class="days" id="days"></div>
+        <p class="hint">Blue dots indicate dates with records.</p>
       </aside>
-
-      <section class="day-panel" id="dayPanel" aria-live="polite"></section>
+      <section class="panel day-panel" id="dayPanel" aria-live="polite"></section>
     </div>
   </section>
 </main>
@@ -317,230 +172,264 @@ footer {
 <footer>SHOTARO LOG · A FAN-MADE ARCHIVE · 2026</footer>
 
 <script>
-const monthNames = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
+const months = [
+  "January","February","March","April","May","June",
+  "July","August","September","October","November","December"
 ];
-const shortNames = [
-  "JAN", "FEB", "MAR", "APR", "MAY", "JUN",
-  "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"
+const shortMonths = [
+  "JAN","FEB","MAR","APR","MAY","JUN",
+  "JUL","AUG","SEP","OCT","NOV","DEC"
 ];
 
 /*
-  Add public schedule records here when ready.
-  Date format: YYYY-MM-DD
-  Example:
-  "2026-10-26": [
-    {
-      type: "OFFICIAL SCHEDULE",
-      title: "Event title",
-      description: "Location, details and source notes.",
-      source: "https://official-source-link"
-    }
-  ]
+HOW TO ADD A RECORD:
+Date format: YYYY-MM-DD
+One date can contain multiple records.
+
+"2026-10-26": [{
+  type: "OFFICIAL SCHEDULE",
+  title: "Event name",
+  location: "Location",
+  description: "Notes",
+  image: "https://image-link",
+  source: "https://official-source-link"
+}],
+
+Use only publicly shareable images and sources.
+Leave image or source as "" if not available.
 */
-const records = {};
+const records = {
+  /*
+  Example format only — replace with verified information:
+
+  "2026-10-26": [{
+    type: "OFFICIAL SCHEDULE",
+    title: "Example event title",
+    location: "Location",
+    description: "Add verified details here.",
+    image: "",
+    source: "https://example.com"
+  }],
+  */
+};
 
 let currentMonth = 0;
 let selectedDate = "2026-01-01";
-
 const $ = id => document.getElementById(id);
 
-function makeDateKey(year, month, day) {
-  return year + "-" +
-    String(month + 1).padStart(2, "0") + "-" +
-    String(day).padStart(2, "0");
+function dateKey(month, day) {
+  return "2026-" + String(month + 1).padStart(2,"0") +
+    "-" + String(day).padStart(2,"0");
 }
 
 function openMonth(month, day = 1) {
   currentMonth = month;
-  selectedDate = makeDateKey(2026, month, day);
+  selectedDate = dateKey(month, day);
   $("overview").style.display = "none";
-  $("detailView").style.display = "block";
+  $("detail").style.display = "block";
   renderCalendar();
   renderDay();
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo({top:0,behavior:"smooth"});
 }
 
 function showOverview() {
-  $("detailView").style.display = "none";
+  $("detail").style.display = "none";
   $("overview").style.display = "block";
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo({top:0,behavior:"smooth"});
 }
 
 function buildOverview() {
-  const track = $("yearTrack");
-  const grid = $("monthGrid");
-
-  monthNames.forEach((name, month) => {
+  months.forEach((name, month) => {
     const link = document.createElement("a");
     link.className = "month-link";
     link.href = "#month-" + (month + 1);
-    link.innerHTML = "<span>" + shortNames[month] + "</span>";
+    const label = document.createElement("span");
+    label.textContent = shortMonths[month];
+    link.appendChild(label);
     link.addEventListener("click", event => {
       event.preventDefault();
       openMonth(month);
     });
-    track.appendChild(link);
+    $("track").appendChild(link);
 
     const card = document.createElement("button");
     card.type = "button";
     card.className = "month-card";
     card.id = "month-" + (month + 1);
-    card.innerHTML =
-      '<span class="month-number">2026 / ' +
-      String(month + 1).padStart(2, "0") +
-      '</span><span class="month-name">' + name +
-      '</span><span class="month-note">View monthly archive →</span>';
+
+    const no = document.createElement("span");
+    no.className = "month-no";
+    no.textContent = "2026 / " + String(month + 1).padStart(2,"0");
+
+    const title = document.createElement("span");
+    title.className = "month-name";
+    title.textContent = name;
+
+    const hint = document.createElement("span");
+    hint.className = "month-hint";
+    hint.textContent = "View monthly archive →";
+
+    card.append(no,title,hint);
     card.addEventListener("click", () => openMonth(month));
-    grid.appendChild(card);
+    $("monthGrid").appendChild(card);
   });
 }
 
 function renderCalendar() {
   $("detailTitle").textContent =
-    "2026." + String(currentMonth + 1).padStart(2, "0");
-  $("calendarTitle").textContent =
-    monthNames[currentMonth].toUpperCase() + " 2026";
+    "2026." + String(currentMonth + 1).padStart(2,"0");
+  $("calTitle").textContent = months[currentMonth].toUpperCase() + " 2026";
+  $("days").innerHTML = "";
 
-  const daysContainer = $("calendarDays");
-  daysContainer.innerHTML = "";
+  const first = new Date(2026,currentMonth,1);
+  const count = new Date(2026,currentMonth + 1,0).getDate();
+  const offset = (first.getDay() + 6) % 7;
 
-  const firstDay = new Date(2026, currentMonth, 1);
-  const daysInMonth = new Date(2026, currentMonth + 1, 0).getDate();
-  const mondayOffset = (firstDay.getDay() + 6) % 7;
-
-  for (let i = 0; i < mondayOffset; i++) {
-    const blank = document.createElement("span");
-    daysContainer.appendChild(blank);
+  for (let i = 0; i < offset; i++) {
+    $("days").appendChild(document.createElement("span"));
   }
 
-  for (let day = 1; day <= daysInMonth; day++) {
-    const key = makeDateKey(2026, currentMonth, day);
+  for (let day = 1; day <= count; day++) {
+    const key = dateKey(currentMonth,day);
     const button = document.createElement("button");
     button.type = "button";
-    button.className = "day-button";
+    button.className = "day";
     button.textContent = day;
-    button.setAttribute("aria-label", key);
+    button.setAttribute("aria-label",key);
 
     if (key === selectedDate) button.classList.add("selected");
-    if (records[key]) button.classList.add("today-record");
+    if (records[key] && records[key].length) {
+      button.classList.add("has-record");
+    }
 
-    button.addEventListener("click", () => {
+    button.addEventListener("click",() => {
       selectedDate = key;
       renderCalendar();
       renderDay();
     });
-    daysContainer.appendChild(button);
+    $("days").appendChild(button);
   }
 
-  $("prevMonth").disabled = currentMonth === 0;
-  $("nextMonth").disabled = currentMonth === 11;
+  $("prev").disabled = currentMonth === 0;
+  $("next").disabled = currentMonth === 11;
+}
+
+function addText(parent,className,value) {
+  if (!value) return;
+  const el = document.createElement("p");
+  el.className = className;
+  el.textContent = value;
+  parent.appendChild(el);
 }
 
 function renderDay() {
   const parts = selectedDate.split("-");
-  const day = Number(parts[2]);
   const month = Number(parts[1]) - 1;
-  const dayRecords = records[selectedDate] || [];
+  const day = Number(parts[2]);
+  const list = records[selectedDate] || [];
+  const panel = $("dayPanel");
+  panel.innerHTML = "";
 
-  $("dayPanel").innerHTML =
-    '<div class="day-date">' + selectedDate + '</div>' +
-    '<h3>' + monthNames[month] + ' ' + day + ', 2026</h3>';
+  const date = document.createElement("div");
+  date.className = "day-date";
+  date.textContent = selectedDate;
+  panel.appendChild(date);
 
-  if (dayRecords.length === 0) {
+  const title = document.createElement("h3");
+  title.textContent = months[month] + " " + day + ", 2026";
+  panel.appendChild(title);
+
+  if (!list.length) {
     const empty = document.createElement("div");
-    empty.className = "empty-day";
-    empty.innerHTML =
-      "<strong>No records added yet.</strong>" +
-      "This date is ready for future archive entries.";
-    $("dayPanel").appendChild(empty);
+    empty.className = "empty";
+    const strong = document.createElement("strong");
+    strong.textContent = "No records added yet.";
+    empty.append(strong,document.createTextNode(
+      "This date is ready for future archive entries."
+    ));
+    panel.appendChild(empty);
   } else {
-    dayRecords.forEach(record => {
+    list.forEach(item => {
       const card = document.createElement("article");
-      card.className = "record-card";
+      card.className = "record";
 
       const type = document.createElement("div");
-      type.className = "record-type";
-      type.textContent = record.type || "SCHEDULE";
+      type.className = "type";
+      type.textContent = item.type || "SCHEDULE";
+      card.appendChild(type);
 
       const title = document.createElement("div");
       title.className = "record-title";
-      title.textContent = record.title || "Untitled record";
+      title.textContent = item.title || "Untitled record";
+      card.appendChild(title);
 
-      const description = document.createElement("p");
-      description.className = "record-copy";
-      description.textContent = record.description || "";
+      addText(card,"record-info",item.location);
+      addText(card,"record-info",item.description);
 
-      card.append(type, title, description);
-
-      if (record.source) {
+      if (item.image) {
         try {
-          const url = new URL(record.source);
+          const url = new URL(item.image);
           if (url.protocol === "https:" || url.protocol === "http:") {
-            const link = document.createElement("a");
-            link.href = url.href;
-            link.target = "_blank";
-            link.rel = "noopener noreferrer";
-            link.className = "record-copy";
-            link.textContent = "OFFICIAL SOURCE ↗";
-            link.style.display = "inline-block";
-            link.style.marginTop = "12px";
-            card.appendChild(link);
+            const img = document.createElement("img");
+            img.className = "record-image";
+            img.src = url.href;
+            img.alt = item.title || "Schedule photo";
+            img.loading = "lazy";
+            card.appendChild(img);
           }
         } catch (error) {}
       }
 
-      $("dayPanel").appendChild(card);
+      if (item.source) {
+        try {
+          const url = new URL(item.source);
+          if (url.protocol === "https:" || url.protocol === "http:") {
+            const a = document.createElement("a");
+            a.className = "source";
+            a.href = url.href;
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+            a.textContent = "VIEW SOURCE ↗";
+            card.appendChild(a);
+          }
+        } catch (error) {}
+      }
+      panel.appendChild(card);
     });
   }
 
   const nav = document.createElement("div");
-  nav.className = "detail-nav";
-
+  nav.className = "day-nav";
   const previous = document.createElement("button");
-  previous.className = "text-button";
+  previous.className = "small-btn";
   previous.textContent = "← Previous day";
-
   const next = document.createElement("button");
-  next.className = "text-button";
+  next.className = "small-btn";
   next.textContent = "Next day →";
 
-  const current = new Date(selectedDate + "T12:00:00");
-  const minDate = new Date("2026-01-01T12:00:00");
-  const maxDate = new Date("2026-12-31T12:00:00");
-
-  previous.disabled = current <= minDate;
-  next.disabled = current >= maxDate;
-
-  previous.addEventListener("click", () => moveDay(-1));
-  next.addEventListener("click", () => moveDay(1));
-
-  nav.append(previous, next);
-  $("dayPanel").appendChild(nav);
+  previous.disabled = selectedDate === "2026-01-01";
+  next.disabled = selectedDate === "2026-12-31";
+  previous.addEventListener("click",() => moveDay(-1));
+  next.addEventListener("click",() => moveDay(1));
+  nav.append(previous,next);
+  panel.appendChild(nav);
 }
 
 function moveDay(amount) {
   const date = new Date(selectedDate + "T12:00:00");
   date.setDate(date.getDate() + amount);
-  selectedDate = makeDateKey(2026, date.getMonth(), date.getDate());
   currentMonth = date.getMonth();
+  selectedDate = dateKey(currentMonth,date.getDate());
   renderCalendar();
   renderDay();
 }
 
-$("backButton").addEventListener("click", showOverview);
-
-$("prevMonth").addEventListener("click", () => {
-  if (currentMonth > 0) {
-    openMonth(currentMonth - 1);
-  }
+$("back").addEventListener("click",showOverview);
+$("prev").addEventListener("click",() => {
+  if (currentMonth > 0) openMonth(currentMonth - 1);
 });
-
-$("nextMonth").addEventListener("click", () => {
-  if (currentMonth < 11) {
-    openMonth(currentMonth + 1);
-  }
+$("next").addEventListener("click",() => {
+  if (currentMonth < 11) openMonth(currentMonth + 1);
 });
 
 buildOverview();
