@@ -334,16 +334,21 @@
 
 .intro-top {
   position: absolute;
-  top: 25px;
+  top: 28px;
   left: 5%;
   right: 5%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 16px;
-  font-size: 10px;
-  letter-spacing: 0.18em;
+
+  font-family: "DM Sans", Arial, sans-serif;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  line-height: 1.6;
   text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.82);
 }
 
 .intro-skip {
@@ -394,7 +399,7 @@
   margin-left: 30%;
 
   /* 鲜红色斜体 */
-  color: #ed172b;
+  color: #880808;
 
   font-family: "Bodoni Moda", Georgia, serif;
   font-size: clamp(76px, 17vw, 210px);
@@ -415,36 +420,63 @@
   position: absolute;
   left: 5%;
   bottom: 10%;
-  max-width: 230px;
-  font-size: 10px;
-  line-height: 1.9;
-  letter-spacing: 0.15em;
+  max-width: 220px;
+
+  font-family: "DM Sans", Arial, sans-serif;
+  font-size: 9px;
+  font-weight: 400;
+  line-height: 2;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
 }
 
 .intro-caption strong {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+
   color: #ed172b;
-  font-size: 12px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  line-height: 1.8;
 }
 
 .intro-enter {
   position: absolute;
   right: 5%;
   bottom: 9%;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+
   color: #fff;
   text-decoration: none;
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  border-bottom: 2px solid #ed172b;
+  font-family: "DM Sans", Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  line-height: 1.8;
+
+  border-bottom: 1px solid #ed172b;
   padding: 12px 0;
   cursor: pointer;
+  transition: gap 0.25s ease, color 0.25s ease;
 }
 
 .intro-enter span {
   color: #ed172b;
-  margin-left: 12px;
+  font-size: 16px;
+  transition: transform 0.25s ease;
+}
+
+.intro-enter:hover {
+  gap: 20px;
+}
+
+.intro-enter:hover span {
+  transform: translate(3px, -3px);
 }
 
 .intro-line {
@@ -510,11 +542,13 @@
     object-position: 55% center;
   }
 
-  .intro-caption {
-    bottom: 12%;
-    max-width: 145px;
-    font-size: 8px;
-  }
+ .intro-caption {
+  bottom: 12%;
+  max-width: 145px;
+  font-size: 8px;
+  line-height: 1.9;
+  letter-spacing: 0.1em;
+}
 
   .intro-enter {
     right: 5%;
@@ -572,7 +606,7 @@
   </div>
 
   <a href="#main" class="intro-enter" id="enterArchive">
-    ENTER ARCHIVE <span>↗</span>
+    READ LOG <span>↗</span>
   </a>
 
 </section>
