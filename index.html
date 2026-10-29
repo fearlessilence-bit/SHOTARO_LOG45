@@ -567,6 +567,312 @@
     animation-delay: 0ms;
   }
 }
+    
+/* ==========================================
+   SHOTARO LOG — INTERNAL HOMEPAGE REDESIGN
+   01 Navigation
+   02 Editorial Hero
+   03 Archive Modules
+   04 Latest Schedule
+   ========================================== */
+
+:root {
+  --sl-black: #171719;
+  --sl-white: #fff;
+  --sl-red: #ed172b;
+  --sl-muted: #77717a;
+  --sl-line: #e8dde2;
+  --sl-paper: #fdf5f8;
+}
+
+/* Base homepage */
+body {
+  background: var(--sl-paper);
+  color: var(--sl-black);
+}
+
+body a {
+  transition:
+    color 0.25s ease,
+    opacity 0.25s ease,
+    background 0.25s ease;
+}
+
+/* 01 — TOP NAVIGATION */
+header,
+.site-header,
+.navbar,
+.topbar {
+  position: relative;
+  z-index: 10;
+}
+
+header,
+.site-header,
+.navbar {
+  border-bottom: 1px solid var(--sl-line);
+}
+
+nav a,
+header a,
+.site-header a,
+.navbar a {
+  text-decoration: none;
+}
+
+nav a:hover,
+header a:hover,
+.site-header a:hover,
+.navbar a:hover {
+  color: var(--sl-red);
+}
+
+/* 02 — EDITORIAL HERO */
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(48px, 8vw, 112px) clamp(20px, 6vw, 88px);
+  min-height: 420px;
+  background: var(--sl-white);
+  border-bottom: 1px solid var(--sl-line);
+}
+
+.hero h1,
+.hero h2 {
+  max-width: 900px;
+  margin: 0;
+  color: var(--sl-black);
+  font-family: "Archivo Black", Impact, sans-serif;
+  font-size: clamp(52px, 11vw, 150px);
+  font-weight: 900;
+  letter-spacing: -0.075em;
+  line-height: 0.86;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.hero p {
+  max-width: 480px;
+  color: var(--sl-muted);
+  font-family: "DM Sans", Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.9;
+  letter-spacing: 0.08em;
+}
+
+.hero img {
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Editorial red details */
+.hero .accent,
+.hero .eyebrow,
+.hero .label {
+  color: var(--sl-red);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+/* 03 — FOUR ARCHIVE MODULES */
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  margin: 0;
+  padding: 0 clamp(20px, 6vw, 88px);
+  background: var(--sl-white);
+}
+
+.module-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 190px;
+  padding: clamp(20px, 3vw, 38px);
+  overflow: hidden;
+  color: var(--sl-black);
+  background: var(--sl-white);
+  border: 0;
+  border-top: 1px solid var(--sl-black);
+  border-right: 1px solid var(--sl-line);
+  border-radius: 0;
+  box-shadow: none;
+  text-decoration: none;
+}
+
+.module-card:nth-child(even) {
+  border-right: 0;
+}
+
+.module-card h2,
+.module-card h3,
+.module-card h4 {
+  margin: 14px 0;
+  color: var(--sl-black);
+  font-family: "Archivo Black", Impact, sans-serif;
+  font-size: clamp(25px, 4vw, 48px);
+  font-weight: 900;
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+  text-transform: uppercase;
+}
+
+.module-card p {
+  max-width: 340px;
+  color: var(--sl-muted);
+  font-family: "DM Sans", Arial, sans-serif;
+  font-size: 11px;
+  line-height: 1.8;
+  letter-spacing: 0.04em;
+}
+
+.module-card::after {
+  content: "↗";
+  align-self: flex-end;
+  margin-top: 20px;
+  color: var(--sl-red);
+  font-family: Arial, sans-serif;
+  font-size: 25px;
+  transition: transform 0.25s ease;
+}
+
+.module-card:hover {
+  color: var(--sl-black);
+  background: #fff9fb;
+}
+
+.module-card:hover::after {
+  transform: translate(4px, -4px);
+}
+
+/* Optional numbered labels, if already present in the HTML */
+.module-card .number,
+.module-card .module-number,
+.module-card .eyebrow {
+  color: var(--sl-red);
+  font-family: "DM Sans", Arial, sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+}
+
+/* 04 — LATEST SCHEDULE / ARCHIVE */
+.latest-schedule,
+.latest-section,
+.schedule-preview,
+#latest-schedule {
+  margin: 0;
+  padding: clamp(36px, 6vw, 76px) clamp(20px, 6vw, 88px);
+  background: var(--sl-paper);
+}
+
+.latest-schedule h2,
+.latest-section h2,
+.schedule-preview h2,
+#latest-schedule h2 {
+  margin: 0 0 28px;
+  padding-bottom: 18px;
+  color: var(--sl-black);
+  border-bottom: 1px solid var(--sl-black);
+  font-family: "Archivo Black", Impact, sans-serif;
+  font-size: clamp(28px, 5vw, 56px);
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.latest-schedule article,
+.latest-section article,
+.schedule-preview article,
+#latest-schedule article {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--sl-line);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.latest-schedule a,
+.latest-section a,
+.schedule-preview a,
+#latest-schedule a {
+  color: var(--sl-black);
+  text-decoration: none;
+}
+
+.latest-schedule a:hover,
+.latest-section a:hover,
+.schedule-preview a:hover,
+#latest-schedule a:hover {
+  color: var(--sl-red);
+}
+
+/* General editorial typography */
+main h2,
+main h3 {
+  letter-spacing: -0.04em;
+}
+
+main img {
+  max-width: 100%;
+}
+
+/* Avoid forcing unrelated buttons into a new style */
+button {
+  cursor: pointer;
+}
+
+/* Mobile layout */
+@media (max-width: 640px) {
+  .hero {
+    min-height: 320px;
+    padding: 52px 20px;
+  }
+
+  .hero h1,
+  .hero h2 {
+    font-size: clamp(44px, 15vw, 82px);
+  }
+
+  .module-grid {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 0 20px;
+  }
+
+  .module-card {
+    min-height: 150px;
+    padding: 24px 18px;
+    border-right: 0;
+  }
+
+  .module-card h2,
+  .module-card h3,
+  .module-card h4 {
+    font-size: clamp(30px, 10vw, 42px);
+  }
+
+  .latest-schedule,
+  .latest-section,
+  .schedule-preview,
+  #latest-schedule {
+    padding: 36px 20px;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .module-card,
+  .module-card::after,
+  body a {
+    transition: none;
+  }
+}
+
   </style>
 </head>
 
