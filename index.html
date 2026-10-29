@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#FDF5F8">
-  <meta name="description" content="SHOTARO LOG — A personal fan archive documenting Shotaro's public schedules, moments and memories.">
+  <meta name="description" content="SHOTARO LOG — Moments matter.">
   <title>SHOTARO LOG</title>
 
   <style>
@@ -368,13 +368,21 @@
 
 .intro-shotaro {
   display: block;
-  color: #fff;
+
+  /* 白色主字体 */
+  color: #ffffff;
+
   font-family: Impact, "Arial Narrow", sans-serif;
   font-size: clamp(58px, 14.5vw, 190px);
   font-weight: 900;
   letter-spacing: -0.065em;
   white-space: nowrap;
-  text-shadow: 5px 5px 0 #d10b20;
+
+  /* 红色偏移阴影，制造立体效果 */
+  text-shadow:
+    3px 3px 0 #d10b20,
+    6px 6px 0 rgba(0, 0, 0, 0.8);
+
   transform: translateX(-110%);
   animation: titleReveal 0.85s cubic-bezier(.2,.8,.2,1)
     0.25s forwards;
@@ -384,14 +392,20 @@
   display: block;
   margin-top: 12px;
   margin-left: 30%;
+
+  /* 鲜红色斜体 */
   color: #ed172b;
+
   font-family: "Bodoni Moda", Georgia, serif;
   font-size: clamp(76px, 17vw, 210px);
   font-style: italic;
   font-weight: 400;
   letter-spacing: -0.07em;
   line-height: 0.8;
-  text-shadow: 1px 1px 0 #78000d;
+
+  /* 轻微暗红阴影 */
+  text-shadow: 2px 2px 0 #65000a;
+
   opacity: 0;
   transform: translateY(35px);
   animation: logReveal 0.8s ease 0.8s forwards;
@@ -481,9 +495,11 @@
   }
 
   .intro-shotaro {
-    font-size: 15vw;
-    text-shadow: 3px 3px 0 #d10b20;
-  }
+  font-size: 15vw;
+  text-shadow:
+    2px 2px 0 #d10b20,
+    4px 4px 0 rgba(0, 0, 0, 0.8);
+}
 
   .intro-log {
     margin-left: 25%;
