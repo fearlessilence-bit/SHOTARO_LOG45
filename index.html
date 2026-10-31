@@ -1178,7 +1178,220 @@ button {
   }
 }
 
-  </style>
+ 
+/* ==========================================
+   SHOTARO LOG — MONOCHROME + BURGUNDY THEME
+   ========================================== */
+
+:root {
+  --sl-black: #111111;
+  --sl-white: #FFFFFF;
+  --sl-paper: #F4F4F2;
+  --sl-muted: #777777;
+  --sl-line: #D9D9D7;
+  --sl-red: #741F32;
+  --sl-burgundy: #741F32;
+}
+
+/* Global color system */
+html {
+  background: #FFFFFF;
+}
+
+body {
+  background: #FFFFFF !important;
+  color: #111111 !important;
+}
+
+/* Remove old pink backgrounds */
+body,
+main,
+section,
+article,
+footer,
+.container,
+.content,
+.wrapper {
+  background-color: #FFFFFF;
+  color: #111111;
+}
+
+/* Navigation */
+header,
+.site-header,
+.navbar,
+.topbar {
+  background: #FFFFFF !important;
+  color: #111111 !important;
+  border-bottom: 1px solid #D9D9D7 !important;
+  box-shadow: none !important;
+}
+
+header a,
+.site-header a,
+.navbar a,
+nav a {
+  color: #111111;
+}
+
+header a:hover,
+.site-header a:hover,
+.navbar a:hover,
+nav a:hover {
+  color: #741F32;
+}
+
+/* Main editorial hero */
+.hero {
+  background: #F4F4F2 !important;
+  color: #111111 !important;
+  border-bottom: 1px solid #D9D9D7;
+}
+
+.hero h1,
+.hero h2 {
+  color: #111111 !important;
+}
+
+.hero p {
+  color: #777777 !important;
+}
+
+.hero .accent,
+.hero .eyebrow,
+.hero .label {
+  color: #741F32 !important;
+}
+
+/* Archive modules */
+.module-grid {
+  background: #FFFFFF !important;
+}
+
+.module-card {
+  background: #FFFFFF !important;
+  color: #111111 !important;
+  border-color: #D9D9D7 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.module-card h2,
+.module-card h3,
+.module-card h4 {
+  color: #111111 !important;
+}
+
+.module-card p {
+  color: #777777 !important;
+}
+
+.module-card::after {
+  color: #741F32 !important;
+}
+
+.module-card:hover {
+  background: #F4F4F2 !important;
+}
+
+.module-card .number,
+.module-card .module-number,
+.module-card .eyebrow {
+  color: #741F32 !important;
+}
+
+/* Latest schedule */
+.latest-schedule,
+.latest-section,
+.schedule-preview,
+#latest-schedule {
+  background: #F4F4F2 !important;
+  color: #111111 !important;
+}
+
+.latest-schedule h2,
+.latest-section h2,
+.schedule-preview h2,
+#latest-schedule h2 {
+  color: #111111 !important;
+  border-bottom-color: #111111 !important;
+}
+
+.latest-schedule article,
+.latest-section article,
+.schedule-preview article,
+#latest-schedule article {
+  background: transparent !important;
+  border-bottom: 1px solid #D9D9D7 !important;
+}
+
+.latest-schedule a,
+.latest-section a,
+.schedule-preview a,
+#latest-schedule a {
+  color: #111111;
+}
+
+.latest-schedule a:hover,
+.latest-section a:hover,
+.schedule-preview a:hover,
+#latest-schedule a:hover {
+  color: #741F32;
+}
+
+/* Links and small accents */
+a {
+  text-decoration-color: #741F32;
+}
+
+button {
+  color: #111111;
+}
+
+button:hover {
+  border-color: #741F32;
+}
+
+/* Form controls */
+input,
+textarea,
+select {
+  background: #FFFFFF;
+  color: #111111;
+  border-color: #D9D9D7;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline-color: #741F32;
+  border-color: #741F32;
+}
+
+/* Subtle separators */
+hr {
+  border: 0;
+  border-top: 1px solid #D9D9D7;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .hero {
+    background: #F4F4F2 !important;
+  }
+
+  .module-card {
+    background: #FFFFFF !important;
+  }
+
+  .latest-schedule,
+  .latest-section,
+  .schedule-preview,
+  #latest-schedule {
+    background: #F4F4F2 !important;
+  }
+}
+ </style>
 </head>
 
 <body>
